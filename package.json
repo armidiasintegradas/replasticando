@@ -1,0 +1,11 @@
+{
+  "name": "replasticando",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Replasticando — Plataforma Oficial e Catálogo de Materiais",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
