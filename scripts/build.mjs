@@ -42,7 +42,7 @@ const pages = [
     description: 'Transformamos plásticos pós-consumo recuperados em uma nova matéria-prima de rigor mineral para arquitetura de ponta e design autoral.',
     ctaText: 'Solicitar Orçamento →',
     ctaHref: '#conversao',
-    placaActive: ''
+    activeKey: 'HOME'
   },
   {
     name: 'PLACA',
@@ -52,7 +52,37 @@ const pages = [
     description: 'Superfície sólida, monolítica e usinável concebida a partir de polímeros pós-consumo para a arquitetura contemporânea e marcenaria de precisão.',
     ctaText: 'Solicitar Amostra',
     ctaHref: '#amostras',
-    placaActive: 'active'
+    activeKey: 'PLACA'
+  },
+  {
+    name: 'PROCESSO',
+    source: 'src/pages/processo.html',
+    dest: 'processo.html',
+    title: 'Processo — Replasticando // Da Forma Descartada à Nova Matéria',
+    description: 'Transformamos plástico descartado em uma nova superfície de alta densidade para arquitetura, design e novos produtos. Sem verniz ideológico, com rigor industrial.',
+    ctaText: 'Falar com a Fábrica →',
+    ctaHref: 'contato.html',
+    activeKey: 'PROCESSO'
+  },
+  {
+    name: 'POSSIBILIDADES',
+    source: 'src/pages/possibilidades.html',
+    dest: 'possibilidades.html',
+    title: 'Possibilidades — Replasticando // Aplicações da Matéria',
+    description: 'Uma placa maciça que entra em arquitetura, interiores, mobiliário autoral, retail, design colecionável e novas tipologias estruturais.',
+    ctaText: 'Especificar Matéria →',
+    ctaHref: '#especificar',
+    activeKey: 'POSSIBILIDADES'
+  },
+  {
+    name: 'PROFISSIONAIS',
+    source: 'src/pages/profissionais.html',
+    dest: 'profissionais.html',
+    title: 'Profissionais — Replasticando // Hub de Especificação e Engenharia',
+    description: 'Placas maciças, cotas de amostras calibradas, dados técnicos de densidade e suporte à engenharia de transformadores para arquitetos e designers.',
+    ctaText: 'Pedir Amostra Física →',
+    ctaHref: '#amostras',
+    activeKey: 'PROFISSIONAIS'
   }
 ];
 
@@ -62,9 +92,21 @@ for (const page of pages) {
   
   // Render header with active states
   const renderedHeader = headerTemplate
-    .replace('{{NAV_PLACA_ACTIVE}}', page.placaActive)
+    .replace('{{NAV_PLACA_ACTIVE}}', page.activeKey === 'PLACA' ? 'active' : '')
+    .replace('{{NAV_PROCESSO_ACTIVE}}', page.activeKey === 'PROCESSO' ? 'active' : '')
+    .replace('{{NAV_POSSIBILIDADES_ACTIVE}}', page.activeKey === 'POSSIBILIDADES' ? 'active' : '')
+    .replace('{{NAV_PROFISSIONAIS_ACTIVE}}', page.activeKey === 'PROFISSIONAIS' ? 'active' : '')
+    .replace('{{NAV_PROJETOS_ACTIVE}}', page.activeKey === 'PROJETOS' ? 'active' : '')
+    .replace('{{NAV_CIRCULARIDADE_ACTIVE}}', page.activeKey === 'CIRCULARIDADE' ? 'active' : '')
     .replace('{{CTA_TEXT}}', page.ctaText)
     .replace('{{CTA_HREF}}', page.ctaHref);
+
+  // Render menu with active states
+  const renderedMenu = menuTemplate
+    .replace('{{MENU_PLACA_ACTIVE}}', page.activeKey === 'PLACA' ? 'active' : '')
+    .replace('{{MENU_PROCESSO_ACTIVE}}', page.activeKey === 'PROCESSO' ? 'active' : '')
+    .replace('{{MENU_POSSIBILIDADES_ACTIVE}}', page.activeKey === 'POSSIBILIDADES' ? 'active' : '')
+    .replace('{{MENU_PROFISSIONAIS_ACTIVE}}', page.activeKey === 'PROFISSIONAIS' ? 'active' : '');
 
   // Render full page shell
   const renderedHtml = shellTemplate
@@ -73,7 +115,7 @@ for (const page of pages) {
     .replace('{{HEADER}}', renderedHeader)
     .replace('{{CONTENT}}', content)
     .replace('{{FOOTER}}', footerTemplate)
-    .replace('{{MENU}}', menuTemplate);
+    .replace('{{MENU}}', renderedMenu);
 
   const destPath = resolve(rootDir, page.dest);
   writeFileSync(destPath, renderedHtml, 'utf-8');
@@ -81,3 +123,4 @@ for (const page of pages) {
 }
 
 console.log('[BUILD] Build concluído com sucesso!');
+

@@ -14,33 +14,53 @@ function getSha256(filePath) {
   return createHash('sha256').update(fileBuffer).digest('hex').toLowerCase();
 }
 
-test('1. Reference Immutability & SHA-256 Gate', (t) => {
-  const homeRefPath = resolve(rootDir, 'references/stitch-originals/home.html');
-  const placaRefPath = resolve(rootDir, 'references/stitch-originals/placa.html');
+const PRODUCTION_PAGES = [
+  'index.html',
+  'placa.html',
+  'processo.html',
+  'possibilidades.html',
+  'profissionais.html'
+];
 
-  assert.ok(existsSync(homeRefPath), 'references/stitch-originals/home.html deve existir');
-  assert.ok(existsSync(placaRefPath), 'references/stitch-originals/placa.html deve existir');
+test('1. Reference Immutability & 5 Frozen SHA-256 Hashes', (t) => {
+  const references = [
+    {
+      file: 'references/stitch-originals/home.html',
+      expectedHash: '336643bac399437b8968be90ff04333d857f24992db5e6c4ae295187234a16c4'
+    },
+    {
+      file: 'references/stitch-originals/placa.html',
+      expectedHash: 'e89317ed561c9ad7cbc29fdf49e4173e856dbceaea598e951a898c1afba16fc5'
+    },
+    {
+      file: 'references/stitch-originals/processo.html',
+      expectedHash: 'c9e64b4ba97fe038fe512b7c0a98f48cae0c78548e925a409659d7d0d3a3d8f3'
+    },
+    {
+      file: 'references/stitch-originals/possibilidades.html',
+      expectedHash: '817e6e39aa9d62086f8d396c3df23a7d8883813cfe71140cef07847ae883b158'
+    },
+    {
+      file: 'references/stitch-originals/profissionais.html',
+      expectedHash: '2eadb91358e0dda892271daa55dfeeef46f0ffada8cdac5c5175e3c8eba1ba01'
+    }
+  ];
 
-  const homeHash = getSha256(homeRefPath);
-  const placaHash = getSha256(placaRefPath);
-
-  assert.equal(
-    homeHash,
-    '336643bac399437b8968be90ff04333d857f24992db5e6c4ae295187234a16c4',
-    'references/stitch-originals/home.html deve manter hash imutável congelado'
-  );
-
-  assert.equal(
-    placaHash,
-    'e89317ed561c9ad7cbc29fdf49e4173e856dbceaea598e951a898c1afba16fc5',
-    'references/stitch-originals/placa.html deve manter hash imutável congelado'
-  );
+  for (const ref of references) {
+    const fullPath = resolve(rootDir, ref.file);
+    assert.ok(existsSync(fullPath), `${ref.file} deve existir`);
+    const computedHash = getSha256(fullPath);
+    assert.equal(computedHash, ref.expectedHash, `${ref.file} deve manter hash congelado imutável`);
+  }
 });
 
-test('2. Required Production Files & Artifacts', (t) => {
+test('2. Required Production Files & Batch 01 Pages', (t) => {
   const files = [
     'index.html',
     'placa.html',
+    'processo.html',
+    'possibilidades.html',
+    'profissionais.html',
     'styles/tokens.css',
     'styles/base.css',
     'styles/components.css',
@@ -58,20 +78,16 @@ test('2. Required Production Files & Artifacts', (t) => {
   }
 });
 
-test('3. Semantic Heading Hierarchy & Single H1 Invariant', (t) => {
-  const pages = ['index.html', 'placa.html'];
-
-  for (const p of pages) {
+test('3. Semantic Heading Hierarchy & Single H1 Invariant (All 5 Pages)', (t) => {
+  for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     const h1Matches = html.match(/<h1[\s>]/gi) || [];
     assert.equal(h1Matches.length, 1, `A página ${p} deve possuir exatamente um único elemento <h1>`);
   }
 });
 
-test('4. Canonical Header and Fullscreen Menu Structure', (t) => {
-  const pages = ['index.html', 'placa.html'];
-
-  for (const p of pages) {
+test('4. Canonical Header, Desktop Nav & Fullscreen Menu Structure (All 5 Pages)', (t) => {
+  for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
 
     // Header checks
@@ -113,10 +129,8 @@ test('4. Canonical Header and Fullscreen Menu Structure', (t) => {
   }
 });
 
-test('5. Canonical Footer & Attribution Invariants', (t) => {
-  const pages = ['index.html', 'placa.html'];
-
-  for (const p of pages) {
+test('5. Canonical Footer & Attribution Invariants (All 5 Pages)', (t) => {
+  for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     assert.ok(html.includes('class="site-footer"'), `${p} deve conter o rodapé canônico .site-footer`);
     assert.ok(
@@ -127,14 +141,12 @@ test('5. Canonical Footer & Attribution Invariants', (t) => {
   }
 });
 
-test('6. Image Source Safety & Zero Broken Prompts', (t) => {
-  const pages = ['index.html', 'placa.html'];
-
-  for (const p of pages) {
+test('6. Image Source Safety & Zero Broken Prompts (All 5 Pages)', (t) => {
+  for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     
     // Ensure no <img src="Studio product photograph..."> prompts exist in production markup
-    const promptImgMatch = html.match(/<img[^>]+src=["'](Studio product|Architectural material|Extreme macro|High-end|Editorial|Minimalist)/i);
+    const promptImgMatch = html.match(/<img[^>]+src=["'](Studio product|Architectural material|Extreme macro|High-end|Editorial|Minimalist|Documentary)/i);
     assert.equal(
       promptImgMatch,
       null,
@@ -143,29 +155,32 @@ test('6. Image Source Safety & Zero Broken Prompts', (t) => {
 
     // Ensure status tags are present for application visualisations
     assert.ok(
-      html.includes('[ VISUALIZAÇÃO DE APLICAÇÃO ]') || html.includes('VISUALIZAÇÃO DE APLICAÇÃO'),
-      `${p} deve conter a etiqueta de conformidade [ VISUALIZAÇÃO DE APLICAÇÃO ]`
+      html.includes('[ VISUALIZAÇÃO DE APLICAÇÃO ]') ||
+      html.includes('[ ESTUDO DE MATERIAL ]') ||
+      html.includes('[ INSTRUMENTAL DE ATELIÊ ]') ||
+      html.includes('VISUALIZAÇÃO DE APLICAÇÃO'),
+      `${p} deve conter a etiqueta de conformidade de mídia técnica`
     );
   }
 });
 
-test('7. Content Truth & Unvalidated Claims Guardrails', (t) => {
-  const placaHtml = readFileSync(resolve(rootDir, 'placa.html'), 'utf-8');
-  
-  // Placa must contain explicit status badges for unvalidated specs
-  assert.ok(
-    placaHtml.includes('[ INFORMAÇÃO EM VALIDAÇÃO ]') || placaHtml.includes('[ EM VALIDAÇÃO ]'),
-    'placa.html deve proteger especificações técnicas com [ INFORMAÇÃO EM VALIDAÇÃO ] ou [ EM VALIDAÇÃO ]'
-  );
-
-  const homeHtml = readFileSync(resolve(rootDir, 'index.html'), 'utf-8');
-  assert.ok(
-    homeHtml.includes('[ EM VALIDAÇÃO ]'),
-    'index.html deve etiquetar especificações com [ EM VALIDAÇÃO ]'
-  );
+test('7. Content Truth & Unvalidated Claims Guardrails (All 5 Pages)', (t) => {
+  for (const p of PRODUCTION_PAGES) {
+    const html = readFileSync(resolve(rootDir, p), 'utf-8');
+    
+    // Must contain explicit status badges for unvalidated specs
+    assert.ok(
+      html.includes('[ INFORMAÇÃO EM VALIDAÇÃO ]') ||
+      html.includes('[ EM VALIDAÇÃO ]') ||
+      html.includes('[ EM VALIDAÇÃO TÉCNICA ]') ||
+      html.includes('[ LAUDO OFICIAL A INSERIR ]') ||
+      html.includes('[ DADO TÉCNICO VALIDADO ]'),
+      `${p} deve proteger especificações técnicas com etiquetas Content Truth`
+    );
+  }
 });
 
-test('8. Accessibility & Reduced Motion Guardrails', (t) => {
+test('8. Accessibility & Motion System Guardrails', (t) => {
   const baseCss = readFileSync(resolve(rootDir, 'styles/base.css'), 'utf-8');
   assert.ok(
     baseCss.includes('@media (prefers-reduced-motion: reduce)'),
@@ -175,6 +190,13 @@ test('8. Accessibility & Reduced Motion Guardrails', (t) => {
     baseCss.includes(':focus-visible'),
     'base.css deve definir regras para :focus-visible'
   );
+
+  const compCss = readFileSync(resolve(rootDir, 'styles/components.css'), 'utf-8');
+  assert.ok(compCss.includes('motion-fragmentar'), 'components.css deve conter animação motion-fragmentar');
+  assert.ok(compCss.includes('motion-agrupar'), 'components.css deve conter animação motion-agrupar');
+  assert.ok(compCss.includes('motion-comprimir'), 'components.css deve conter animação motion-comprimir');
+  assert.ok(compCss.includes('motion-transformar'), 'components.css deve conter animação motion-transformar');
+  assert.ok(compCss.includes('motion-revelar'), 'components.css deve conter animação motion-revelar');
 
   const menuJs = readFileSync(resolve(rootDir, 'lib/menu.js'), 'utf-8');
   assert.ok(menuJs.includes('Escape'), 'menu.js deve escutar a tecla Escape');

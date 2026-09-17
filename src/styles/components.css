@@ -738,7 +738,9 @@
 }
 
 .heading-hero {
-  font-size: 3.75rem; /* 60px (text-6xl) */
+  font-size: clamp(1.875rem, 8vw, 3.75rem);
+  word-break: normal;
+  overflow-wrap: break-word;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: var(--tracking-tighter);
@@ -810,6 +812,7 @@
   font-size: 1.125rem;
   line-height: var(--lh-relaxed);
   color: var(--color-graphite-muted);
+  overflow-wrap: break-word;
 }
 
 @media (min-width: 1024px) {
@@ -872,3 +875,169 @@
   outline: none;
   border-color: var(--color-graphite);
 }
+
+/* ==========================================================================
+   Additional Grid & Layout Extensions
+   ========================================================================== */
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+@media (min-width: 768px) {
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .md\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .md\:col-span-1 { grid-column: span 1 / span 1; }
+  .md\:col-span-2 { grid-column: span 2 / span 2; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+.col-span-2 { grid-column: span 2 / span 2; }
+
+/* Sub-nav Industrial Flow */
+.subnav-flow {
+  border-bottom: 1px solid var(--color-surface-container);
+  background-color: var(--color-surface-low);
+  padding: 0.75rem 0;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.subnav-flow-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.subnav-flow-link {
+  color: var(--color-graphite-muted);
+  transition: color var(--duration-fast) var(--ease-industrial);
+}
+
+.subnav-flow-link:hover,
+.subnav-flow-link.active {
+  color: var(--color-accent-magenta);
+}
+
+/* Tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-surface-container);
+  background-color: var(--color-surface);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.data-table thead {
+  background-color: var(--color-surface-low);
+  border-bottom: 1px solid var(--color-surface-container);
+}
+
+.data-table th {
+  padding: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-graphite);
+}
+
+.data-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-surface-container);
+  color: var(--color-graphite);
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Checkbox & Form Controls */
+.form-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.25rem;
+}
+
+.form-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-graphite);
+}
+
+.form-checkbox {
+  accent-color: var(--color-graphite);
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Motion System — Transformative Sequence
+   FRAGMENTAR → AGRUPAR → COMPRIMIR → TRANSFORMAR → REVELAR
+   ========================================================================== */
+@keyframes motion-fragmentar {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(0.96) rotate(-1deg); opacity: 0.9; }
+  100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+}
+
+@keyframes motion-agrupar {
+  0% { letter-spacing: 0.15em; }
+  50% { letter-spacing: 0.05em; }
+  100% { letter-spacing: 0.15em; }
+}
+
+@keyframes motion-comprimir {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(0.98); }
+  100% { transform: scaleY(1); }
+}
+
+@keyframes motion-transformar {
+  0% { filter: contrast(100%); }
+  50% { filter: contrast(125%); }
+  100% { filter: contrast(100%); }
+}
+
+@keyframes motion-revelar {
+  0% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+.animate-fragmentar { animation: motion-fragmentar 6s ease-in-out infinite; }
+.animate-agrupar { animation: motion-agrupar 4s ease-in-out infinite; }
+.animate-comprimir { animation: motion-comprimir 5s ease-in-out infinite; }
+.animate-transformar { animation: motion-transformar 5s ease-in-out infinite; }
+.animate-revelar { animation: motion-revelar 0.6s ease-out forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fragmentar,
+  .animate-agrupar,
+  .animate-comprimir,
+  .animate-transformar,
+  .animate-revelar {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
