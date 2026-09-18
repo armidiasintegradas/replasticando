@@ -19,10 +19,13 @@ const PRODUCTION_PAGES = [
   'placa.html',
   'processo.html',
   'possibilidades.html',
-  'profissionais.html'
+  'profissionais.html',
+  'design.html',
+  'instituicoes.html',
+  'circularidade.html'
 ];
 
-test('1. Reference Immutability & 5 Frozen SHA-256 Hashes', (t) => {
+test('1. Reference Immutability & All 8 Frozen Canonical SHA-256 Hashes', (t) => {
   const references = [
     {
       file: 'references/stitch-originals/home.html',
@@ -43,6 +46,18 @@ test('1. Reference Immutability & 5 Frozen SHA-256 Hashes', (t) => {
     {
       file: 'references/stitch-originals/profissionais.html',
       expectedHash: '2eadb91358e0dda892271daa55dfeeef46f0ffada8cdac5c5175e3c8eba1ba01'
+    },
+    {
+      file: 'references/stitch-originals/design.html',
+      expectedHash: '8304d6bd6e64dc1832170fd1838d163ffc2f5bfce0ef71e206bc392445ae75a9'
+    },
+    {
+      file: 'references/stitch-originals/instituicoes.html',
+      expectedHash: '68b9453727b4010c74a2e97df15d7d5a765c442f42edbd1c4be7c27b0a45ad7e'
+    },
+    {
+      file: 'references/stitch-originals/circularidade.html',
+      expectedHash: '4dc837cc8c7a08b598856ec7ecf3a6dff4a4573f96ce0f0ddc01a059c484add5'
     }
   ];
 
@@ -54,13 +69,16 @@ test('1. Reference Immutability & 5 Frozen SHA-256 Hashes', (t) => {
   }
 });
 
-test('2. Required Production Files & Batch 01 Pages', (t) => {
+test('2. Required Production Files & Batch 01 & 02 Pages', (t) => {
   const files = [
     'index.html',
     'placa.html',
     'processo.html',
     'possibilidades.html',
     'profissionais.html',
+    'design.html',
+    'instituicoes.html',
+    'circularidade.html',
     'styles/tokens.css',
     'styles/base.css',
     'styles/components.css',
@@ -78,7 +96,7 @@ test('2. Required Production Files & Batch 01 Pages', (t) => {
   }
 });
 
-test('3. Semantic Heading Hierarchy & Single H1 Invariant (All 5 Pages)', (t) => {
+test('3. Semantic Heading Hierarchy & Single H1 Invariant (All 8 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     const h1Matches = html.match(/<h1[\s>]/gi) || [];
@@ -86,7 +104,7 @@ test('3. Semantic Heading Hierarchy & Single H1 Invariant (All 5 Pages)', (t) =>
   }
 });
 
-test('4. Canonical Header, Desktop Nav & Fullscreen Menu Structure (All 5 Pages)', (t) => {
+test('4. Canonical Header, Desktop Nav & Fullscreen Menu Structure (All 8 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
 
@@ -129,7 +147,7 @@ test('4. Canonical Header, Desktop Nav & Fullscreen Menu Structure (All 5 Pages)
   }
 });
 
-test('5. Canonical Footer & Attribution Invariants (All 5 Pages)', (t) => {
+test('5. Canonical Footer & Attribution Invariants (All 8 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     assert.ok(html.includes('class="site-footer"'), `${p} deve conter o rodapé canônico .site-footer`);
@@ -141,7 +159,7 @@ test('5. Canonical Footer & Attribution Invariants (All 5 Pages)', (t) => {
   }
 });
 
-test('6. Image Source Safety & Zero Broken Prompts (All 5 Pages)', (t) => {
+test('6. Image Source Safety & Zero Broken Prompts (All 8 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     
@@ -164,7 +182,7 @@ test('6. Image Source Safety & Zero Broken Prompts (All 5 Pages)', (t) => {
   }
 });
 
-test('7. Content Truth & Unvalidated Claims Guardrails (All 5 Pages)', (t) => {
+test('7. Content Truth & Unvalidated Claims Guardrails (All 8 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     
@@ -174,7 +192,8 @@ test('7. Content Truth & Unvalidated Claims Guardrails (All 5 Pages)', (t) => {
       html.includes('[ EM VALIDAÇÃO ]') ||
       html.includes('[ EM VALIDAÇÃO TÉCNICA ]') ||
       html.includes('[ LAUDO OFICIAL A INSERIR ]') ||
-      html.includes('[ DADO TÉCNICO VALIDADO ]'),
+      html.includes('[ DADO TÉCNICO VALIDADO ]') ||
+      html.includes('[EM HOMOLOGAÇÃO]'),
       `${p} deve proteger especificações técnicas com etiquetas Content Truth`
     );
   }
@@ -203,4 +222,32 @@ test('8. Accessibility & Motion System Guardrails', (t) => {
   assert.ok(menuJs.includes('aria-expanded'), 'menu.js deve sincronizar aria-expanded');
   assert.ok(menuJs.includes('aria-hidden'), 'menu.js deve sincronizar aria-hidden');
   assert.ok(menuJs.includes('menu-open'), 'menu.js deve aplicar classe menu-open ao body');
+});
+
+test('9. Active Route Synchronization (Batch 02 Routes)', (t) => {
+  const designHtml = readFileSync(resolve(rootDir, 'design.html'), 'utf-8');
+  assert.ok(designHtml.includes('class="nav-link active"'), 'design.html deve ter nav-link ativo');
+  assert.ok(designHtml.includes('class="menu-nav-link active"'), 'design.html deve ter menu-nav-link ativo');
+
+  const instHtml = readFileSync(resolve(rootDir, 'instituicoes.html'), 'utf-8');
+  assert.ok(instHtml.includes('class="nav-link active"'), 'instituicoes.html deve ter nav-link ativo');
+  assert.ok(instHtml.includes('class="menu-nav-link active"'), 'instituicoes.html deve ter menu-nav-link ativo');
+
+  const circHtml = readFileSync(resolve(rootDir, 'circularidade.html'), 'utf-8');
+  assert.ok(circHtml.includes('class="nav-link active"'), 'circularidade.html deve ter nav-link ativo');
+  assert.ok(circHtml.includes('class="menu-nav-link active"'), 'circularidade.html deve ter menu-nav-link ativo');
+});
+
+test('10. Conversion Flows & Progressive Disclosure Invariants', (t) => {
+  const designHtml = readFileSync(resolve(rootDir, 'design.html'), 'utf-8');
+  assert.ok(designHtml.includes('href="#catalogo"'), 'design.html deve direcionar CTA para catálogo autoral');
+  assert.ok(designHtml.includes('contato.html?produto=banco'), 'design.html deve possuir fluxo de projeto por peça');
+
+  const instHtml = readFileSync(resolve(rootDir, 'instituicoes.html'), 'utf-8');
+  assert.ok(instHtml.includes('id="contato-gestor"'), 'instituicoes.html deve ter seção de contato gestor');
+  assert.ok(instHtml.includes('toggle-perfil-inst'), 'instituicoes.html deve ter seleção de perfil institucional');
+
+  const circHtml = readFileSync(resolve(rootDir, 'circularidade.html'), 'utf-8');
+  assert.ok(circHtml.includes('id="diagnostico-form"'), 'circularidade.html deve ter formulário de diagnóstico');
+  assert.ok(circHtml.includes('toggle-perfil-circ'), 'circularidade.html deve ter seleção de perfil territorial');
 });

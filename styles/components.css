@@ -13,6 +13,15 @@
   margin-right: auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .max-w-canvas {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 .site-main {
@@ -116,10 +125,10 @@
 .nav-desktop {
   display: none;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.875rem;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -127,13 +136,17 @@
 @media (min-width: 1024px) {
   .nav-desktop {
     display: flex;
+    gap: 0.5rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
   }
 }
 
 @media (min-width: 1280px) {
   .nav-desktop {
-    gap: 2rem;
-    letter-spacing: 0.15em;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
   }
 }
 
@@ -183,6 +196,31 @@
 @media (min-width: 640px) {
   .btn-primary-cta {
     display: inline-flex;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .brand-placeholder {
+    padding: 0.25rem 0.5rem;
+    height: 34px;
+  }
+  .brand-placeholder-name {
+    font-size: 0.875rem;
+  }
+  .brand-placeholder-badge {
+    font-size: 0.4375rem;
+    margin-left: 0.25rem;
+    letter-spacing: 0.06em;
+  }
+  .nav-desktop {
+    gap: 0.5rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+  }
+  .btn-primary-cta {
+    padding: 0.35rem 0.625rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
   }
 }
 
@@ -738,7 +776,7 @@
 }
 
 .heading-hero {
-  font-size: clamp(1.875rem, 8vw, 3.75rem);
+  font-size: clamp(1.875rem, 7vw, 3.5rem);
   word-break: normal;
   overflow-wrap: break-word;
   font-weight: 700;
@@ -750,13 +788,19 @@
 
 @media (min-width: 640px) {
   .heading-hero {
-    font-size: 4.5rem; /* 72px (text-7xl) */
+    font-size: 3.75rem; /* 60px */
   }
 }
 
 @media (min-width: 1024px) {
   .heading-hero {
-    font-size: 6rem; /* 96px (text-8xl) */
+    font-size: 4.25rem; /* 68px */
+  }
+}
+
+@media (min-width: 1280px) {
+  .heading-hero {
+    font-size: 5.5rem; /* 88px */
   }
 }
 
@@ -1040,4 +1084,99 @@
     filter: none !important;
   }
 }
+
+/* ==========================================================================
+   Accordion & Details
+   ========================================================================== */
+.faq-details {
+  border-bottom: 1px solid var(--color-surface-container);
+  padding: 1.5rem 0;
+}
+
+.faq-details:first-of-type {
+  border-top: 1px solid var(--color-surface-container);
+}
+
+.faq-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-graphite);
+  user-select: none;
+  gap: 1rem;
+}
+
+.faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-icon {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--color-graphite-muted);
+  transition: transform var(--duration-fast) var(--ease-industrial);
+  flex-shrink: 0;
+}
+
+.faq-details[open] .faq-icon {
+  transform: rotate(45deg);
+  color: var(--color-accent-magenta);
+}
+
+.faq-content {
+  margin-top: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: var(--lh-relaxed);
+  color: var(--color-graphite-muted);
+  max-width: 56rem;
+}
+
+/* ==========================================================================
+   Progressive Disclosure & Interactive Form Components
+   ========================================================================== */
+.form-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background-color: var(--color-surface-low);
+  border: 1px solid var(--color-surface-container);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-graphite-muted);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-industrial);
+  text-align: left;
+}
+
+.form-tab-btn:hover {
+  border-color: var(--color-graphite);
+  color: var(--color-graphite);
+}
+
+.form-tab-btn.active {
+  background-color: var(--color-graphite);
+  border-color: var(--color-graphite);
+  color: var(--color-surface);
+}
+
+.form-notice-box {
+  padding: 1rem;
+  background-color: var(--color-surface-low);
+  border: 1px solid var(--color-surface-container);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--color-graphite);
+}
+
 

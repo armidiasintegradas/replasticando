@@ -83,6 +83,36 @@ const pages = [
     ctaText: 'Pedir Amostra Física →',
     ctaHref: '#amostras',
     activeKey: 'PROFISSIONAIS'
+  },
+  {
+    name: 'DESIGN',
+    source: 'src/pages/design.html',
+    dest: 'design.html',
+    title: 'Design — Replasticando // Mobiliário Autoral & Objetos de Coleção',
+    description: 'Objetos e mobiliário de escala arquitetônica desenvolvidos diretamente a partir de chapa polimérica de alta densidade Replasticando.',
+    ctaText: 'Catálogo Autoral →',
+    ctaHref: '#catalogo',
+    activeKey: 'DESIGN'
+  },
+  {
+    name: 'INSTITUICOES',
+    source: 'src/pages/instituicoes.html',
+    dest: 'instituicoes.html',
+    title: 'Instituições — Replasticando // Mobiliário Que Também Educa',
+    description: 'Espaços educacionais, culturais e públicos transformados por superfícies monolíticas de alta densidade feitas a partir de resíduo pós-consumo.',
+    ctaText: 'Atendimento Institucional →',
+    ctaHref: '#contato-gestor',
+    activeKey: 'INSTITUICOES'
+  },
+  {
+    name: 'CIRCULARIDADE',
+    source: 'src/pages/circularidade.html',
+    dest: 'circularidade.html',
+    title: 'Circularidade — Replasticando // O Resíduo Daqui Volta Para Cá',
+    description: 'Conectamos cadeia de resíduos de reciclagem, transformação, produtos e territórios em projetos estruturados de economia circular.',
+    ctaText: 'Iniciar um Ciclo →',
+    ctaHref: '#diagnostico-form',
+    activeKey: 'CIRCULARIDADE'
   }
 ];
 
@@ -96,7 +126,8 @@ for (const page of pages) {
     .replace('{{NAV_PROCESSO_ACTIVE}}', page.activeKey === 'PROCESSO' ? 'active' : '')
     .replace('{{NAV_POSSIBILIDADES_ACTIVE}}', page.activeKey === 'POSSIBILIDADES' ? 'active' : '')
     .replace('{{NAV_PROFISSIONAIS_ACTIVE}}', page.activeKey === 'PROFISSIONAIS' ? 'active' : '')
-    .replace('{{NAV_PROJETOS_ACTIVE}}', page.activeKey === 'PROJETOS' ? 'active' : '')
+    .replace('{{NAV_DESIGN_ACTIVE}}', page.activeKey === 'DESIGN' ? 'active' : '')
+    .replace('{{NAV_INSTITUICOES_ACTIVE}}', page.activeKey === 'INSTITUICOES' ? 'active' : '')
     .replace('{{NAV_CIRCULARIDADE_ACTIVE}}', page.activeKey === 'CIRCULARIDADE' ? 'active' : '')
     .replace('{{CTA_TEXT}}', page.ctaText)
     .replace('{{CTA_HREF}}', page.ctaHref);
@@ -106,7 +137,10 @@ for (const page of pages) {
     .replace('{{MENU_PLACA_ACTIVE}}', page.activeKey === 'PLACA' ? 'active' : '')
     .replace('{{MENU_PROCESSO_ACTIVE}}', page.activeKey === 'PROCESSO' ? 'active' : '')
     .replace('{{MENU_POSSIBILIDADES_ACTIVE}}', page.activeKey === 'POSSIBILIDADES' ? 'active' : '')
-    .replace('{{MENU_PROFISSIONAIS_ACTIVE}}', page.activeKey === 'PROFISSIONAIS' ? 'active' : '');
+    .replace('{{MENU_PROFISSIONAIS_ACTIVE}}', page.activeKey === 'PROFISSIONAIS' ? 'active' : '')
+    .replace('{{MENU_DESIGN_ACTIVE}}', page.activeKey === 'DESIGN' ? 'active' : '')
+    .replace('{{MENU_INSTITUICOES_ACTIVE}}', page.activeKey === 'INSTITUICOES' ? 'active' : '')
+    .replace('{{MENU_CIRCULARIDADE_ACTIVE}}', page.activeKey === 'CIRCULARIDADE' ? 'active' : '');
 
   // Render full page shell
   const renderedHtml = shellTemplate
