@@ -125,10 +125,10 @@
 .nav-desktop {
   display: none;
   align-items: center;
-  gap: 0.875rem;
+  gap: 0.4rem;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -136,17 +136,33 @@
 @media (min-width: 1024px) {
   .nav-desktop {
     display: flex;
-    gap: 0.5rem;
-    font-size: 0.625rem;
-    letter-spacing: 0.04em;
+    gap: 0.45rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.03em;
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1200px) {
   .nav-desktop {
-    gap: 1.5rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
+    gap: 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+  }
+}
+
+@media (min-width: 1360px) {
+  .nav-desktop {
+    gap: 1rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.07em;
+  }
+}
+
+@media (min-width: 1440px) {
+  .nav-desktop {
+    gap: 1.15rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
   }
 }
 
@@ -1180,3 +1196,85 @@
 }
 
 
+
+
+/* ==========================================================================
+   Batch 03 Utilities: Layout, Grids, Borders & Media
+   ========================================================================== */
+.aspect-\[21\/10\] { aspect-ratio: 21 / 10; }
+.aspect-\[16\/10\] { aspect-ratio: 16 / 10; }
+.aspect-\[16\/9\] { aspect-ratio: 16 / 9; }
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sm\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .lg\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .lg\:text-8xl { font-size: 5.5rem; line-height: 0.92; }
+  .lg\:text-9xl { font-size: 6.5rem; line-height: 0.9; }
+}
+
+.border-2 { border-width: 2px; }
+.border-graphite { border-color: var(--color-graphite); }
+.border-graphite\/20 { border-color: rgba(17, 17, 17, 0.2); }
+.border-l-2 { border-left-width: 2px; border-left-style: solid; border-left-color: var(--color-graphite); }
+.border-y { border-top-width: 1px; border-bottom-width: 1px; }
+
+.divide-y > * + * { border-top-width: 1px; border-top-style: solid; border-color: var(--color-surface-container); }
+.divide-surface-container > * + * { border-color: var(--color-surface-container); }
+
+.bg-terracotta-accent { background-color: var(--color-accent-magenta); }
+.text-terracotta-accent { color: var(--color-accent-magenta); }
+.hover\:bg-terracotta-accent:hover { background-color: var(--color-accent-magenta); color: var(--color-surface); }
+.hover\:text-terracotta-accent:hover { color: var(--color-accent-magenta); }
+
+.bg-surface\/10 { background-color: rgba(250, 249, 246, 0.1); }
+.bg-surface\/20 { background-color: rgba(250, 249, 246, 0.2); }
+.bg-surface\/5 { background-color: rgba(250, 249, 246, 0.05); }
+.bg-surface\/90 { background-color: rgba(250, 249, 246, 0.9); }
+.bg-surface\/95 { background-color: rgba(250, 249, 246, 0.95); }
+.bg-graphite\/90 { background-color: rgba(17, 17, 17, 0.9); }
+.bg-graphite\/80 { background-color: rgba(17, 17, 17, 0.8); }
+
+.overflow-x-auto { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.border-collapse { border-collapse: collapse; }
+
+.table-audit {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-align: left;
+}
+.table-audit th {
+  padding: 1rem;
+  background-color: var(--color-surface-low);
+  border-bottom: 1px solid var(--color-surface-container);
+  color: var(--color-graphite-muted);
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+}
+.table-audit td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-surface-container);
+}
+.table-audit tr:last-child td {
+  border-bottom: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

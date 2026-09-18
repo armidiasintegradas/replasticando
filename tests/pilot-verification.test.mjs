@@ -22,10 +22,13 @@ const PRODUCTION_PAGES = [
   'profissionais.html',
   'design.html',
   'instituicoes.html',
-  'circularidade.html'
+  'circularidade.html',
+  'projetos.html',
+  'impacto.html',
+  'katche.html'
 ];
 
-test('1. Reference Immutability & All 8 Frozen Canonical SHA-256 Hashes', (t) => {
+test('1. Reference Immutability & All 11 Frozen Canonical SHA-256 Hashes', (t) => {
   const references = [
     {
       file: 'references/stitch-originals/home.html',
@@ -58,18 +61,34 @@ test('1. Reference Immutability & All 8 Frozen Canonical SHA-256 Hashes', (t) =>
     {
       file: 'references/stitch-originals/circularidade.html',
       expectedHash: '4dc837cc8c7a08b598856ec7ecf3a6dff4a4573f96ce0f0ddc01a059c484add5'
+    },
+    {
+      file: 'references/stitch-originals/projetos.html',
+      expectedHash: '4cb3c46d6e3af91867e94562f3a2da585e64a677effa7302d4871c54b022cc0e'
+    },
+    {
+      file: 'references/stitch-originals/impacto.html',
+      expectedHash: '4ad6f7cd41abbb6d77fc4e7eeb73456ebac075a614a01450857b74dc7c9b3867'
+    },
+    {
+      file: 'references/stitch-originals/katche.html',
+      expectedHash: '4737513acf411fe9a088ad2fdd1b5b775d2c040e5374620e8d5fb22917966903'
     }
   ];
 
   for (const ref of references) {
     const fullPath = resolve(rootDir, ref.file);
-    assert.ok(existsSync(fullPath), `${ref.file} deve existir`);
-    const computedHash = getSha256(fullPath);
-    assert.equal(computedHash, ref.expectedHash, `${ref.file} deve manter hash congelado imutável`);
+    assert.ok(existsSync(fullPath), `Arquivo canônico congelado deve existir: ${ref.file}`);
+    const actualHash = getSha256(fullPath);
+    assert.equal(
+      actualHash,
+      ref.expectedHash,
+      `O hash SHA-256 da referência ${ref.file} não pode ser alterado! Esperado: ${ref.expectedHash}, Obtido: ${actualHash}`
+    );
   }
 });
 
-test('2. Required Production Files & Batch 01 & 02 Pages', (t) => {
+test('2. Required Production Files & Batch 01, 02 & 03 Pages', (t) => {
   const files = [
     'index.html',
     'placa.html',
@@ -79,14 +98,31 @@ test('2. Required Production Files & Batch 01 & 02 Pages', (t) => {
     'design.html',
     'instituicoes.html',
     'circularidade.html',
-    'styles/tokens.css',
-    'styles/base.css',
-    'styles/components.css',
-    'styles/main.css',
-    'lib/menu.js',
+    'projetos.html',
+    'impacto.html',
+    'katche.html',
+    'src/pages/home.html',
+    'src/pages/placa.html',
+    'src/pages/processo.html',
+    'src/pages/possibilidades.html',
+    'src/pages/profissionais.html',
+    'src/pages/design.html',
+    'src/pages/instituicoes.html',
+    'src/pages/circularidade.html',
+    'src/pages/projetos.html',
+    'src/pages/impacto.html',
+    'src/pages/katche.html',
+    'src/layout/shell.html',
+    'src/layout/header.html',
+    'src/layout/menu.html',
+    'src/layout/footer.html',
+    'src/styles/tokens.css',
+    'src/styles/base.css',
+    'src/styles/components.css',
+    'src/styles/main.css',
+    'src/lib/menu.js',
+    'scripts/build.mjs',
     'docs/CONTENT_TRUTH.md',
-    'docs/ENGINEERING_RULES.md',
-    'docs/IMPLEMENTATION_MASTER.md',
     'docs/QA.md'
   ];
 
@@ -96,7 +132,7 @@ test('2. Required Production Files & Batch 01 & 02 Pages', (t) => {
   }
 });
 
-test('3. Semantic Heading Hierarchy & Single H1 Invariant (All 8 Pages)', (t) => {
+test('3. Semantic Heading Hierarchy & Single H1 Invariant (All 11 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     const h1Matches = html.match(/<h1[\s>]/gi) || [];
@@ -104,7 +140,7 @@ test('3. Semantic Heading Hierarchy & Single H1 Invariant (All 8 Pages)', (t) =>
   }
 });
 
-test('4. Canonical Header, Desktop Nav & Fullscreen Menu Structure (All 8 Pages)', (t) => {
+test('4. Canonical Header, Desktop Nav & Fullscreen Menu Structure (All 11 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
 
@@ -147,7 +183,7 @@ test('4. Canonical Header, Desktop Nav & Fullscreen Menu Structure (All 8 Pages)
   }
 });
 
-test('5. Canonical Footer & Attribution Invariants (All 8 Pages)', (t) => {
+test('5. Canonical Footer & Attribution Invariants (All 11 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     assert.ok(html.includes('class="site-footer"'), `${p} deve conter o rodapé canônico .site-footer`);
@@ -159,7 +195,7 @@ test('5. Canonical Footer & Attribution Invariants (All 8 Pages)', (t) => {
   }
 });
 
-test('6. Image Source Safety & Zero Broken Prompts (All 8 Pages)', (t) => {
+test('6. Image Source Safety & Zero Broken Prompts (All 11 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     
@@ -176,13 +212,14 @@ test('6. Image Source Safety & Zero Broken Prompts (All 8 Pages)', (t) => {
       html.includes('[ VISUALIZAÇÃO DE APLICAÇÃO ]') ||
       html.includes('[ ESTUDO DE MATERIAL ]') ||
       html.includes('[ INSTRUMENTAL DE ATELIÊ ]') ||
+      html.includes('[ PROTÓTIPO AUTORAL ]') ||
       html.includes('VISUALIZAÇÃO DE APLICAÇÃO'),
       `${p} deve conter a etiqueta de conformidade de mídia técnica`
     );
   }
 });
 
-test('7. Content Truth & Unvalidated Claims Guardrails (All 8 Pages)', (t) => {
+test('7. Content Truth & Unvalidated Claims Guardrails (All 11 Pages)', (t) => {
   for (const p of PRODUCTION_PAGES) {
     const html = readFileSync(resolve(rootDir, p), 'utf-8');
     
@@ -193,6 +230,8 @@ test('7. Content Truth & Unvalidated Claims Guardrails (All 8 Pages)', (t) => {
       html.includes('[ EM VALIDAÇÃO TÉCNICA ]') ||
       html.includes('[ LAUDO OFICIAL A INSERIR ]') ||
       html.includes('[ DADO TÉCNICO VALIDADO ]') ||
+      html.includes('[ PROTÓTIPO AUTORAL ]') ||
+      html.includes('[ PROTÓTIPOS EM VALIDAÇÃO ]') ||
       html.includes('[EM HOMOLOGAÇÃO]'),
       `${p} deve proteger especificações técnicas com etiquetas Content Truth`
     );
@@ -238,7 +277,7 @@ test('9. Active Route Synchronization (Batch 02 Routes)', (t) => {
   assert.ok(circHtml.includes('class="menu-nav-link active"'), 'circularidade.html deve ter menu-nav-link ativo');
 });
 
-test('10. Conversion Flows & Progressive Disclosure Invariants', (t) => {
+test('10. Conversion Flows & Progressive Disclosure Invariants (Batch 02)', (t) => {
   const designHtml = readFileSync(resolve(rootDir, 'design.html'), 'utf-8');
   assert.ok(designHtml.includes('href="#catalogo"'), 'design.html deve direcionar CTA para catálogo autoral');
   assert.ok(designHtml.includes('contato.html?produto=banco'), 'design.html deve possuir fluxo de projeto por peça');
@@ -250,4 +289,34 @@ test('10. Conversion Flows & Progressive Disclosure Invariants', (t) => {
   const circHtml = readFileSync(resolve(rootDir, 'circularidade.html'), 'utf-8');
   assert.ok(circHtml.includes('id="diagnostico-form"'), 'circularidade.html deve ter formulário de diagnóstico');
   assert.ok(circHtml.includes('toggle-perfil-circ'), 'circularidade.html deve ter seleção de perfil territorial');
+});
+
+test('11. Active Route Synchronization (Batch 03 Routes — Projetos, Impacto, Katchê!)', (t) => {
+  const projHtml = readFileSync(resolve(rootDir, 'projetos.html'), 'utf-8');
+  assert.ok(projHtml.includes('class="nav-link active"'), 'projetos.html deve ter nav-link ativo no header');
+  assert.ok(projHtml.includes('class="menu-nav-link active"'), 'projetos.html deve ter menu-nav-link ativo no menu');
+
+  const impHtml = readFileSync(resolve(rootDir, 'impacto.html'), 'utf-8');
+  assert.ok(impHtml.includes('class="nav-link active"'), 'impacto.html deve ter nav-link ativo no header');
+  assert.ok(impHtml.includes('class="menu-nav-link active"'), 'impacto.html deve ter menu-nav-link ativo no menu');
+
+  const katHtml = readFileSync(resolve(rootDir, 'katche.html'), 'utf-8');
+  assert.ok(katHtml.includes('class="nav-link active"'), 'katche.html deve ter nav-link ativo no header');
+  assert.ok(katHtml.includes('class="menu-nav-link active"'), 'katche.html deve ter menu-nav-link ativo no menu');
+});
+
+test('12. Batch 03 Content Truth & Editorial Transparency Invariants', (t) => {
+  const projHtml = readFileSync(resolve(rootDir, 'projetos.html'), 'utf-8');
+  assert.ok(projHtml.includes('A Matéria em Uso.'), 'projetos.html deve apresentar narrativa central "A Matéria em Uso."');
+  assert.ok(projHtml.includes('[ VISUALIZAÇÃO DE APLICAÇÃO ]'), 'projetos.html deve rotular visualizações com tag técnica');
+  assert.ok(projHtml.includes('[ CÁLCULO ESTIMADO ]'), 'projetos.html deve identificar peso de plástico como estimado');
+
+  const impHtml = readFileSync(resolve(rootDir, 'impacto.html'), 'utf-8');
+  assert.ok(impHtml.includes('Impacto Precisa de Evidência') || impHtml.includes('Impacto Precisa<br> de Evidência.'), 'impacto.html deve afirmar princípio de evidência');
+  assert.ok(impHtml.includes('PRIMEIRO, FAZER') || impHtml.includes('Primeiro, Fazer'), 'impacto.html deve incluir regra de ouro metodológica');
+  assert.ok(impHtml.includes('[ INFORMAÇÃO EM VALIDAÇÃO ]'), 'impacto.html deve classificar status de dados não certificados');
+
+  const katHtml = readFileSync(resolve(rootDir, 'katche.html'), 'utf-8');
+  assert.ok(katHtml.includes('Matéria<br> + Cultura<br> + Design.') || katHtml.includes('MATÉRIA + CULTURA + DESIGN'), 'katche.html deve apresentar narrativa Matéria + Cultura + Design');
+  assert.ok(katHtml.includes('[ PROTÓTIPO AUTORAL ]'), 'katche.html deve rotular objetos de design como protótipo autoral');
 });

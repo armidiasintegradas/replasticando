@@ -113,6 +113,36 @@ const pages = [
     ctaText: 'Iniciar um Ciclo →',
     ctaHref: '#diagnostico-form',
     activeKey: 'CIRCULARIDADE'
+  },
+  {
+    name: 'PROJETOS',
+    source: 'src/pages/projetos.html',
+    dest: 'projetos.html',
+    title: 'Projetos — Replasticando // A Matéria em Uso',
+    description: 'Projetos, produtos, aplicações e estudos que mostram diferentes caminhos para a matéria Replasticando.',
+    ctaText: 'Começar um Projeto →',
+    ctaHref: 'contato.html',
+    activeKey: 'PROJETOS'
+  },
+  {
+    name: 'IMPACTO',
+    source: 'src/pages/impacto.html',
+    dest: 'impacto.html',
+    title: 'Impacto — Replasticando // Impacto Precisa de Evidência',
+    description: 'Primeiro, fazer. Depois, medir. Então, comunicar. Metodologia de auditoria e transparência de impacto ambiental e social.',
+    ctaText: 'Falar com Equipe →',
+    ctaHref: 'contato.html',
+    activeKey: 'IMPACTO'
+  },
+  {
+    name: 'KATCHE',
+    source: 'src/pages/katche.html',
+    dest: 'katche.html',
+    title: 'Katchê! — Replasticando // Matéria + Cultura + Design',
+    description: 'Uma expressão Replasticando onde a matéria polimérica reciclada encontra o universo do objeto, da cor, do colecionável e da identidade visual brasileira contemporânea.',
+    ctaText: 'Propor Colab →',
+    ctaHref: '#conhecer',
+    activeKey: 'KATCHE'
   }
 ];
 
@@ -129,6 +159,9 @@ for (const page of pages) {
     .replace('{{NAV_DESIGN_ACTIVE}}', page.activeKey === 'DESIGN' ? 'active' : '')
     .replace('{{NAV_INSTITUICOES_ACTIVE}}', page.activeKey === 'INSTITUICOES' ? 'active' : '')
     .replace('{{NAV_CIRCULARIDADE_ACTIVE}}', page.activeKey === 'CIRCULARIDADE' ? 'active' : '')
+    .replace('{{NAV_PROJETOS_ACTIVE}}', page.activeKey === 'PROJETOS' ? 'active' : '')
+    .replace('{{NAV_IMPACTO_ACTIVE}}', page.activeKey === 'IMPACTO' ? 'active' : '')
+    .replace('{{NAV_KATCHE_ACTIVE}}', page.activeKey === 'KATCHE' ? 'active' : '')
     .replace('{{CTA_TEXT}}', page.ctaText)
     .replace('{{CTA_HREF}}', page.ctaHref);
 
@@ -140,7 +173,10 @@ for (const page of pages) {
     .replace('{{MENU_PROFISSIONAIS_ACTIVE}}', page.activeKey === 'PROFISSIONAIS' ? 'active' : '')
     .replace('{{MENU_DESIGN_ACTIVE}}', page.activeKey === 'DESIGN' ? 'active' : '')
     .replace('{{MENU_INSTITUICOES_ACTIVE}}', page.activeKey === 'INSTITUICOES' ? 'active' : '')
-    .replace('{{MENU_CIRCULARIDADE_ACTIVE}}', page.activeKey === 'CIRCULARIDADE' ? 'active' : '');
+    .replace('{{MENU_CIRCULARIDADE_ACTIVE}}', page.activeKey === 'CIRCULARIDADE' ? 'active' : '')
+    .replace('{{MENU_PROJETOS_ACTIVE}}', page.activeKey === 'PROJETOS' ? 'active' : '')
+    .replace('{{MENU_IMPACTO_ACTIVE}}', page.activeKey === 'IMPACTO' ? 'active' : '')
+    .replace('{{MENU_KATCHE_ACTIVE}}', page.activeKey === 'KATCHE' ? 'active' : '');
 
   // Render full page shell
   const renderedHtml = shellTemplate
